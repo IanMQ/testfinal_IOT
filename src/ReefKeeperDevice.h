@@ -409,13 +409,19 @@ public:
       currentSecond(0U) {}
 
   void begin() override {
+    // Initialize the serial console at 115200 baud for debug output.
     Serial.begin(115200);
+    // Give the simulator a brief moment to stabilize before starting I/O.
     delay(1200);
 
+    // Put the ESP32 in WiFi station mode so it can connect to a network.
     WiFi.mode(WIFI_STA);
+    // Print the startup banner with company and developer identification.
     printStartupBanner();
+    // Connect to the configured WiFi access point.
     connectWiFi();
 
+    // Start the background task that will send telemetry over POST.
     temperatureSensor.begin();
     waterLevelSensor.begin();
     buttonPanelSensor.begin();
@@ -441,18 +447,28 @@ public:
   }
 
   void loop() override {
+    // Read the front-panel buttons first so user input is prioritized.
     buttonPanelSensor.sample();
+    // Read the current water temperature from the DHT22 sensor.
     temperatureSensor.sample();
+    // Read the water level using the HC-SR04 sensor.
     waterLevelSensor.sample();
+    // Update the RTC-derived time values.
     clockSensor.sample();
 
+    // Update the feeder state if it is currently dispensing food.
     updateFeeder();
+    // Apply the current heating/cooling rules.
     evaluateHeaterLogic();
+    // Refresh the LCD with the latest state.
     updateDisplay();
 
+    // Update blinking LEDs if needed.
     ledActuator.update();
+    // Build and queue the telemetry payload when the interval expires.
     sendTelemetryIfNeeded();
 
+    // Short pause to keep the loop responsive and reduce CPU load.
     delay(10);
   }
 
