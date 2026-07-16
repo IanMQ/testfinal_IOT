@@ -13,3 +13,4 @@ Bajo el marco de los 12 pasos del IoT System Design Steps, los requisitos de la 
 |Servicio de monitoreo y actualización de telemetría|La aplicación debe enviar cada 5 segundos un registro de estado en formato JSON por **consola serial** y hacia el endpoint remoto definido. La interfaz de este servicio es **consola serial de depuración/monitoreo técnico**.|
 |Servicio de arranque e identificación del dispositivo|La aplicación debe mostrar al iniciar la ejecución la información de la empresa, el desarrollador y el identificador del dispositivo mediante **consola serial**. Esta interfaz apoya la trazabilidad y verificación del prototipo.|
 
+https://wokwi.com/projects/469740941197912065
