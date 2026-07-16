@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "author": "IMQ",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": -4.76,
+      "attrs": { "macAddress": "99:63:AB:CD:EF:12" }
+    },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd",
+      "top": -243.2,
+      "left": -359.2,
+      "attrs": { "pins": "i2c", "i2cAddress": "0x27" }
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht",
+      "top": -230.1,
+      "left": -5.4,
+      "attrs": { "temperature": "24.5", "humidity": "60" }
+    },
+    {
+      "type": "wokwi-pushbutton-6mm",
+      "id": "btnInc",
+      "top": 105.2,
+      "left": -153.6,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-pushbutton-6mm",
+      "id": "btnDec",
+      "top": 103.4,
+      "left": -105.6,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledBlue",
+      "top": -157.2,
+      "left": 195.8,
+      "attrs": { "color": "blue" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledYellow",
+      "top": -147.6,
+      "left": 272.6,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rBlue",
+      "top": -63.8,
+      "left": 200.75,
+      "rotate": 270,
+      "attrs": { "resistance": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rYellow",
+      "top": -63.8,
+      "left": 277.55,
+      "rotate": 270,
+      "attrs": { "resistance": "220" }
+    },
+    {
+      "type": "wokwi-hc-sr04",
+      "id": "ultrasonic",
+      "top": -152.1,
+      "left": 351.1,
+      "attrs": { "distance": "20" }
+    },
+    {
+      "type": "wokwi-ds1307",
+      "id": "rtc",
+      "top": 129,
+      "left": 489.7,
+      "attrs": { "initTime": "now" }
+    },
+    { "type": "wokwi-relay-module", "id": "relay", "top": 240.2, "left": 192, "attrs": {} },
+    { "type": "wokwi-servo", "id": "servo", "top": 305.2, "left": 153.6, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:5V", "lcd:VCC", "red", [ "h-52.61", "v38.4", "h-345.6", "v-403.3" ] ],
+    [ "esp:GND.2", "lcd:GND", "black", [ "h4.84", "v-288", "h-489.6", "v-96" ] ],
+    [ "esp:21", "lcd:SDA", "green", [ "h-475.16", "v-230.6" ] ],
+    [ "esp:22", "lcd:SCL", "blue", [ "h-465.56", "v-240.3" ] ],
+    [ "esp:21", "rtc:SDA", "green", [ "h374.4", "v86.7" ] ],
+    [ "esp:22", "rtc:SCL", "blue", [ "h364.8", "v125" ] ],
+    [ "esp:5V", "rtc:5V", "red", [ "h-52.61", "v19.2", "h528", "v-66.8" ] ],
+    [ "esp:GND.2", "rtc:GND", "black", [ "h0" ] ],
+    [ "esp:23", "dht:SDA", "green", [ "h-81.56", "v-124.8", "h-9.7" ] ],
+    [ "esp:5V", "dht:VCC", "red", [ "h-52.61", "v-307.2" ] ],
+    [ "esp:GND.2", "dht:GND", "black", [ "h4.84", "v-144" ] ],
+    [ "esp:18", "btnInc:1.l", "green", [ "h0" ] ],
+    [ "esp:GND.2", "btnInc:2.l", "black", [ "h0" ] ],
+    [ "esp:19", "btnDec:1.l", "yellow", [ "h0" ] ],
+    [ "esp:GND.2", "btnDec:2.l", "black", [ "h0" ] ],
+    [ "esp:5", "ultrasonic:TRIG", "green", [ "h0" ] ],
+    [ "esp:4", "ultrasonic:ECHO", "blue", [ "h0" ] ],
+    [ "esp:5V", "ultrasonic:VCC", "red", [ "h-52.61", "v28.8", "h475.16" ] ],
+    [ "esp:GND.2", "ultrasonic:GND", "black", [ "h0" ] ],
+    [ "esp:14", "rBlue:1", "blue", [ "h-28.65", "v-153.6", "h259.2" ] ],
+    [ "rBlue:2", "ledBlue:A", "blue", [ "h0" ] ],
+    [ "esp:GND.2", "ledBlue:C", "black", [ "h0" ] ],
+    [ "esp:12", "rYellow:1", "orange", [ "h-14.21", "v-144", "h316.8" ] ],
+    [ "rYellow:2", "ledYellow:A", "orange", [ "h0" ] ],
+    [ "esp:GND.2", "ledYellow:C", "black", [ "h0" ] ],
+    [ "esp:16", "relay:IN", "green", [ "h81.64", "v278.6" ] ],
+    [ "esp:5V", "relay:VCC", "red", [ "h-52.61", "v57.6", "h244.76" ] ],
+    [ "esp:GND.2", "relay:GND", "black", [ "h43.24", "v374.8" ] ],
+    [ "esp:17", "servo:PWM", "green", [ "h24.04", "v403" ] ],
+    [ "esp:5V", "servo:V+", "red", [ "h-52.61", "v163.1" ] ],
+    [ "esp:GND.2", "servo:GND", "black", [ "h43.24", "v480" ] ]
+  ],
+  "dependencies": {}
+}
