@@ -109,12 +109,32 @@ private:
     char timestampBuffer[32];
     formatTimestamp(timestampBuffer, sizeof(timestampBuffer));
 
+    // Hook point:
+    // If you want to fake or enrich values before sending telemetry, do it
+    // here. For example:
+    // - replace `currentTemperatureC` with a test value
+    // - override `lastWaterDistanceCm`
+    // - add new local variables for humidity, salinity, pH, etc.
+    // Keep the final values below as the source of truth for the POST payload.
+    const float telemetryCurrentTemperature = currentTemperatureC;
+    const float telemetryWaterDistanceCm = lastWaterDistanceCm;
+    const bool telemetryLowWaterAlert = lowWaterAlert;
+
     StaticJsonDocument<256> doc;
     doc["deviceMacAddress"] = WiFi.macAddress();
     doc["operationMode"] = operationModeTelemetryString();
-    doc["currentTemperature"] = currentTemperatureC;
-    doc["nivelAgua"] = lastWaterDistanceCm;
+    doc["currentTemperature"] = telemetryCurrentTemperature;
+    doc["nivelAgua"] = telemetryWaterDistanceCm;
+    doc["lowWaterAlert"] = telemetryLowWaterAlert;
     doc["createdAt"] = timestampBuffer;
+
+    // Hook point:
+    // Add any extra JSON fields the backend expects right here, before
+    // `serializeJson(...)` converts the document into the request body.
+    // Example:
+    // doc["salinity"] = 35.2;
+    // doc["ph"] = 8.1;
+    // doc["firmwareVersion"] = "wifi-only";
 
     char payloadBuffer[320];
     const size_t payloadLength = serializeJson(doc, payloadBuffer, sizeof(payloadBuffer) - 1);
@@ -130,6 +150,10 @@ private:
     secureClient.setInsecure();
     secureClient.setTimeout(1000);
 
+    // Hook point:
+    // This is the exact moment where the HTTP POST is created and sent.
+    // If you need to change headers, authentication, content type, endpoint,
+    // or attach a different body format, do it below before `http.POST(...)`.
     HTTPClient http;
     if (http.begin(secureClient, TELEMETRY_URL)) {
       http.addHeader("Content-Type", "application/json");
