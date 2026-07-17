@@ -9,9 +9,9 @@
  * setup() and loop() to the ModestIoT Device coordinator.
  */
 
-#include "ReefKeeperDeviceWIFIONLY.h"
+#include "ReefKeeperDeviceWIFnLCD.h"
 
-static ReefKeeperDeviceWIFIONLY reefKeeperDevice;
+static ReefKeeperDeviceWIFnLCD reefKeeperDevice;
 
 void setup() {
   reefKeeperDevice.begin();
